@@ -11,10 +11,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
@@ -26,6 +23,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.zj.composerefreshlayout.ui.theme.ComposeRefreshLayoutTheme
+import kotlinx.coroutines.delay
 
 class MainActivity : ComponentActivity() {
     @ExperimentalMaterialApi
@@ -35,8 +33,30 @@ class MainActivity : ComponentActivity() {
             ComposeRefreshLayoutTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
-                    SwipeableDemo()
+                    RefreshLayoutDemo()
                 }
+            }
+        }
+    }
+}
+
+@Composable
+fun RefreshLayoutDemo() {
+    val list = (1..20).toList()
+    var refreshing by remember { mutableStateOf(false) }
+    LaunchedEffect(refreshing) {
+        if (refreshing) {
+            delay(2000)
+            refreshing = false
+        }
+    }
+    SwipeRefresh(
+        state = rememberSwipeRefreshState(isRefreshing = refreshing),
+        onRefresh = { refreshing = true },
+    ) {
+        LazyColumn() {
+            items(list) {
+                ColumnItem()
             }
         }
     }

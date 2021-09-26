@@ -21,25 +21,17 @@ import androidx.compose.foundation.MutatePriority
 import androidx.compose.foundation.MutatorMutex
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.Stable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.rememberUpdatedState
-import androidx.compose.runtime.setValue
+import androidx.compose.foundation.layout.offset
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineScope
@@ -257,23 +249,12 @@ fun SwipeRefresh(
         this.refreshTrigger = refreshTriggerPx
     }
 
-    Box(modifier.nestedScroll(connection = nestedScrollConnection)) {
-        content()
-
-        Box(
-            Modifier
-                // If we're not clipping to the padding, we use clipToBounds() before the padding()
-                // modifier.
-                .let { if (!clipIndicatorToPadding) it.clipToBounds() else it }
-                .padding(indicatorPadding)
-                .matchParentSize()
-                // Else, if we're are clipping to the padding, we use clipToBounds() after
-                // the padding() modifier.
-                .let { if (clipIndicatorToPadding) it.clipToBounds() else it }
-        ) {
-            Box(Modifier.align(indicatorAlignment)) {
-                indicator(state, refreshTriggerDistance)
-            }
+    Box(modifier
+        .offset {
+            IntOffset(0, state.indicatorOffset.toInt())
         }
+        .nestedScroll(connection = nestedScrollConnection)) {
+        ClassicRefreshHeader(state, refreshTriggerDistance)
+        content()
     }
 }

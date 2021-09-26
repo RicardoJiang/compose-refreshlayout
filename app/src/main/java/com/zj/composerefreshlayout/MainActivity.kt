@@ -14,6 +14,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
@@ -41,10 +42,6 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-enum class Status {
-    CLOSE, OPEN
-}
-
 @ExperimentalMaterialApi
 @Composable
 fun SwipeableDemo() {
@@ -58,7 +55,7 @@ fun SwipeableDemo() {
                 source: NestedScrollSource
             ): Offset {
                 if (source == NestedScrollSource.Drag && available.y > 0) {
-                    offsetPx.value += available.y
+                    offsetPx.value = (offsetPx.value + available.y).coerceAtMost(150f)
                     return Offset(0f, available.y)
                 }
                 return super.onPostScroll(consumed, available, source)
@@ -68,6 +65,9 @@ fun SwipeableDemo() {
     val list = (1..20).toList()
     Box(
         modifier = Modifier
+            .offset {
+                IntOffset(0, offsetPx.value.toInt())
+            }
             .nestedScroll(nestedScrollConnection)
             .fillMaxSize()
     ) {
@@ -78,14 +78,14 @@ fun SwipeableDemo() {
             style = MaterialTheme.typography.h5,
             modifier = Modifier
                 .offset {
-                    IntOffset(0, -150 + offsetPx.value.toInt())
+                    IntOffset(0, -150)
                 }
                 .fillMaxWidth()
                 .clipToBounds()
                 .height(50.dp)
                 .background(Color.Blue)
         )
-        LazyColumn(modifier = Modifier.offset { IntOffset(0, offsetPx.value.toInt()) }) {
+        LazyColumn() {
             items(list) {
                 ColumnItem()
             }

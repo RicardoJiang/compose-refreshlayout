@@ -38,7 +38,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue
 
-private const val DragMultiplier = 0.5f
+private const val DragMultiplier = 0.3f
 
 /**
  * Creates a [SwipeRefreshState] that is remembered across compositions.
@@ -228,11 +228,14 @@ fun SwipeRefresh(
     val coroutineScope = rememberCoroutineScope()
     val updatedOnRefresh = rememberUpdatedState(onRefresh)
 
-    // Our LaunchedEffect, which animates the indicator to its resting position
-    LaunchedEffect(state.isSwipeInProgress) {
+    LaunchedEffect(state.isSwipeInProgress, state.isRefreshing) {
+        // If there's no swipe currently in progress, animate to the correct resting position
         if (!state.isSwipeInProgress) {
-            // If there's not a swipe in progress, rest the indicator at 0f
-            state.animateOffsetTo(0f)
+            if (state.isRefreshing) {
+                state.animateOffsetTo(150f)
+            } else {
+                state.animateOffsetTo(0f)
+            }
         }
     }
 

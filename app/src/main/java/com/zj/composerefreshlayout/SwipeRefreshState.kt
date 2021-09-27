@@ -39,16 +39,22 @@ class SwipeRefreshState(
 ) {
     private val _indicatorOffset = Animatable(0f)
     private val mutatorMutex = MutatorMutex()
+    var refreshTriggerDistance: Float = 0f
+        internal set
 
     /**
      * Whether this [SwipeRefreshState] is currently refreshing or not.
      */
     var isRefreshing: Boolean by mutableStateOf(isRefreshing)
+        internal set
 
     /**
      * Whether a swipe/drag is currently in progress.
      */
     var isSwipeInProgress: Boolean by mutableStateOf(false)
+        internal set
+
+    var headerState: RefreshHeaderState by mutableStateOf(RefreshHeaderState.PullDownToRefresh)
         internal set
 
     /**
@@ -59,6 +65,7 @@ class SwipeRefreshState(
     internal suspend fun animateOffsetTo(offset: Float) {
         mutatorMutex.mutate {
             _indicatorOffset.animateTo(offset)
+            updateHeaderState()
         }
     }
 
@@ -68,6 +75,27 @@ class SwipeRefreshState(
     internal suspend fun dispatchScrollDelta(delta: Float) {
         mutatorMutex.mutate(MutatePriority.UserInput) {
             _indicatorOffset.snapTo(_indicatorOffset.value + delta)
+            updateHeaderState()
         }
     }
+
+    private fun updateHeaderState() {
+        headerState = if (isRefreshing) {
+            RefreshHeaderState.Refreshing
+        } else if (isSwipeInProgress) {
+            if (indicatorOffset > refreshTriggerDistance) {
+                RefreshHeaderState.ReleaseToRefresh
+            } else {
+                RefreshHeaderState.PullDownToRefresh
+            }
+        } else {
+            RefreshHeaderState.PullDownToRefresh
+        }
+    }
+}
+
+enum class RefreshHeaderState {
+    PullDownToRefresh,
+    Refreshing,
+    ReleaseToRefresh
 }

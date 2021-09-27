@@ -16,29 +16,16 @@
 
 package com.zj.composerefreshlayout
 
-import android.util.Log
-import androidx.compose.animation.core.Animatable
-import androidx.compose.foundation.MutatePriority
-import androidx.compose.foundation.MutatorMutex
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.offset
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
-import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
-import kotlin.math.absoluteValue
 
 /**
  * A layout which implements the swipe-to-refresh pattern, allowing the user to refresh content via
@@ -87,7 +74,7 @@ fun SwipeRefresh(
     indicatorAlignment: Alignment = Alignment.TopCenter,
     indicatorPadding: PaddingValues = PaddingValues(0.dp),
     indicator: @Composable (state: SwipeRefreshState, refreshTrigger: Float) -> Unit = { s, trigger ->
-        ClassicRefreshHeader(s, trigger)
+        ClassicRefreshHeader(s)
     },
     clipIndicatorToPadding: Boolean = true,
     content: @Composable () -> Unit,
@@ -98,6 +85,7 @@ fun SwipeRefresh(
         mutableStateOf(0)
     }
     val refreshTriggerDistance = indicatorHeight * refreshTriggerRate
+    state.refreshTriggerDistance = refreshTriggerDistance
     LaunchedEffect(state.isSwipeInProgress, state.isRefreshing) {
         // If there's no swipe currently in progress, animate to the correct resting position
         if (!state.isSwipeInProgress) {
@@ -127,13 +115,11 @@ fun SwipeRefresh(
         Box(modifier = Modifier
             .onGloballyPositioned {
                 indicatorHeight = it.size.height
-                Log.i("tiaoshi", "size:" + indicatorHeight)
             }
             .offset {
-                Log.i("tiaoshi", "here: offset")
                 IntOffset(0, state.indicatorOffset.toInt() - indicatorHeight)
             }) {
-            ClassicRefreshHeader(state, refreshTriggerDistance)
+            ClassicRefreshHeader(state)
         }
         Box(modifier = Modifier.offset {
             IntOffset(0, state.indicatorOffset.toInt())

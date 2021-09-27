@@ -16,6 +16,7 @@
 
 package com.zj.composerefreshlayout
 
+import android.util.Log
 import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.MutatePriority
 import androidx.compose.foundation.MutatorMutex
@@ -29,6 +30,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
@@ -216,10 +218,10 @@ fun SwipeRefresh(
     onRefresh: () -> Unit,
     modifier: Modifier = Modifier,
     swipeEnabled: Boolean = true,
-    refreshTriggerDistance: Dp = 80.dp,
+    refreshTriggerRate: Float = 1f, //刷新生效高度与refreshHeader的比例
     indicatorAlignment: Alignment = Alignment.TopCenter,
     indicatorPadding: PaddingValues = PaddingValues(0.dp),
-    indicator: @Composable (state: SwipeRefreshState, refreshTrigger: Dp) -> Unit = { s, trigger ->
+    indicator: @Composable (state: SwipeRefreshState, refreshTrigger: Float) -> Unit = { s, trigger ->
         ClassicRefreshHeader(s, trigger)
     },
     clipIndicatorToPadding: Boolean = true,
@@ -227,19 +229,20 @@ fun SwipeRefresh(
 ) {
     val coroutineScope = rememberCoroutineScope()
     val updatedOnRefresh = rememberUpdatedState(onRefresh)
-
+    var indicatorHeight by remember {
+        mutableStateOf(0)
+    }
+    val refreshTriggerDistance = indicatorHeight * refreshTriggerRate
     LaunchedEffect(state.isSwipeInProgress, state.isRefreshing) {
         // If there's no swipe currently in progress, animate to the correct resting position
         if (!state.isSwipeInProgress) {
             if (state.isRefreshing) {
-                state.animateOffsetTo(150f)
+                state.animateOffsetTo(refreshTriggerDistance)
             } else {
                 state.animateOffsetTo(0f)
             }
         }
     }
-
-    val refreshTriggerPx = with(LocalDensity.current) { refreshTriggerDistance.toPx() }
 
     // Our nested scroll connection, which updates our state.
     val nestedScrollConnection = remember(state, coroutineScope) {
@@ -249,15 +252,28 @@ fun SwipeRefresh(
         }
     }.apply {
         this.enabled = swipeEnabled
-        this.refreshTrigger = refreshTriggerPx
+        this.refreshTrigger = refreshTriggerDistance
     }
 
-    Box(modifier
-        .offset {
-            IntOffset(0, state.indicatorOffset.toInt())
+    Box(
+        modifier
+            .nestedScroll(connection = nestedScrollConnection)
+    ) {
+        Box(modifier = Modifier
+            .onGloballyPositioned {
+                indicatorHeight = it.size.height
+                Log.i("tiaoshi", "size:" + indicatorHeight)
+            }
+            .offset {
+                Log.i("tiaoshi", "here: offset")
+                IntOffset(0, state.indicatorOffset.toInt() - indicatorHeight)
+            }) {
+            ClassicRefreshHeader(state, refreshTriggerDistance)
         }
-        .nestedScroll(connection = nestedScrollConnection)) {
-        ClassicRefreshHeader(state, refreshTriggerDistance)
-        content()
+        Box(modifier = Modifier.offset {
+            IntOffset(0, state.indicatorOffset.toInt())
+        }) {
+            content()
+        }
     }
 }

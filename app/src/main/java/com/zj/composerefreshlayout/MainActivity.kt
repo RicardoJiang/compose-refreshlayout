@@ -62,57 +62,6 @@ fun RefreshLayoutDemo() {
     }
 }
 
-@ExperimentalMaterialApi
-@Composable
-fun SwipeableDemo() {
-    val offsetPx = remember { mutableStateOf(0f) }
-    val nestedScrollConnection = remember {
-        object : NestedScrollConnection {
-
-            override fun onPostScroll(
-                consumed: Offset,
-                available: Offset,
-                source: NestedScrollSource
-            ): Offset {
-                if (source == NestedScrollSource.Drag && available.y > 0) {
-                    offsetPx.value = (offsetPx.value + available.y).coerceAtMost(150f)
-                    return Offset(0f, available.y)
-                }
-                return super.onPostScroll(consumed, available, source)
-            }
-        }
-    }
-    val list = (1..20).toList()
-    Box(
-        modifier = Modifier
-            .offset {
-                IntOffset(0, offsetPx.value.toInt())
-            }
-            .nestedScroll(nestedScrollConnection)
-            .fillMaxSize()
-    ) {
-        Text(
-            text = "正在刷新",
-            color = Color.White,
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.h5,
-            modifier = Modifier
-                .offset {
-                    IntOffset(0, -150)
-                }
-                .fillMaxWidth()
-                .clipToBounds()
-                .height(50.dp)
-                .background(Color.Blue)
-        )
-        LazyColumn() {
-            items(list) {
-                ColumnItem()
-            }
-        }
-    }
-}
-
 @Composable
 fun ColumnItem() {
     Column(

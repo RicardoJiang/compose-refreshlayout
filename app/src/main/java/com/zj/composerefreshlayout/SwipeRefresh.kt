@@ -17,7 +17,6 @@
 package com.zj.composerefreshlayout
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.offset
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -25,7 +24,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.unit.dp
 
 /**
  * A layout which implements the swipe-to-refresh pattern, allowing the user to refresh content via
@@ -66,17 +64,14 @@ import androidx.compose.ui.unit.dp
  */
 @Composable
 fun SwipeRefresh(
-    state: SwipeRefreshState,
+    isRefreshing: Boolean,
     onRefresh: () -> Unit,
     modifier: Modifier = Modifier,
     swipeEnabled: Boolean = true,
     refreshTriggerRate: Float = 1f, //刷新生效高度与refreshHeader的比例
-    indicatorAlignment: Alignment = Alignment.TopCenter,
-    indicatorPadding: PaddingValues = PaddingValues(0.dp),
-    indicator: @Composable (state: SwipeRefreshState, refreshTrigger: Float) -> Unit = { s, trigger ->
-        ClassicRefreshHeader(s)
+    indicator: @Composable (state: SwipeRefreshState) -> Unit = {
+        ClassicRefreshHeader(it)
     },
-    clipIndicatorToPadding: Boolean = true,
     content: @Composable () -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -84,13 +79,13 @@ fun SwipeRefresh(
     var indicatorHeight by remember {
         mutableStateOf(0)
     }
-    val refreshTriggerDistance = indicatorHeight * refreshTriggerRate
-    state.refreshTriggerDistance = refreshTriggerDistance
+    val refreshTrigger = indicatorHeight * refreshTriggerRate
+    val state = rememberSwipeRefreshState(isRefreshing, refreshTrigger)
     LaunchedEffect(state.isSwipeInProgress, state.isRefreshing) {
         // If there's no swipe currently in progress, animate to the correct resting position
         if (!state.isSwipeInProgress) {
             if (state.isRefreshing) {
-                state.animateOffsetTo(refreshTriggerDistance)
+                state.animateOffsetTo(refreshTrigger)
             } else {
                 state.animateOffsetTo(0f)
             }
@@ -105,7 +100,7 @@ fun SwipeRefresh(
         }
     }.apply {
         this.enabled = swipeEnabled
-        this.refreshTrigger = refreshTriggerDistance
+        this.refreshTrigger = refreshTrigger
     }
 
     Box(

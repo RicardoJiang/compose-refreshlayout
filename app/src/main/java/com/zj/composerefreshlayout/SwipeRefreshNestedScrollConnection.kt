@@ -13,7 +13,7 @@ internal class SwipeRefreshNestedScrollConnection(
     private val coroutineScope: CoroutineScope,
     private val onRefresh: () -> Unit,
 ) : NestedScrollConnection {
-    private val dragMultiplier = 0.3f
+    private val dragMultiplier = 0.5f
 
     var enabled: Boolean = false
     var refreshTrigger: Float = 0f

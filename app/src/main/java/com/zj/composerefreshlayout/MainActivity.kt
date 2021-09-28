@@ -10,17 +10,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clipToBounds
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
-import androidx.compose.ui.input.nestedscroll.NestedScrollSource
-import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.zj.composerefreshlayout.ui.theme.ComposeRefreshLayoutTheme
 import kotlinx.coroutines.delay
@@ -51,7 +43,7 @@ fun RefreshLayoutDemo() {
         }
     }
     SwipeRefresh(
-        state = rememberSwipeRefreshState(isRefreshing = refreshing),
+        isRefreshing = refreshing,
         onRefresh = { refreshing = true },
     ) {
         LazyColumn() {

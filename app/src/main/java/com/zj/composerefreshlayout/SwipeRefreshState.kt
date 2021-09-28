@@ -14,14 +14,17 @@ import androidx.compose.runtime.*
  */
 @Composable
 fun rememberSwipeRefreshState(
-    isRefreshing: Boolean
+    isRefreshing: Boolean,
+    refreshTrigger: Float
 ): SwipeRefreshState {
     return remember {
         SwipeRefreshState(
-            isRefreshing = isRefreshing
+            isRefreshing = isRefreshing,
+            refreshTrigger = refreshTrigger
         )
     }.apply {
         this.isRefreshing = isRefreshing
+        this.refreshTrigger = refreshTrigger
     }
 }
 
@@ -36,10 +39,11 @@ fun rememberSwipeRefreshState(
 @Stable
 class SwipeRefreshState(
     isRefreshing: Boolean,
+    refreshTrigger: Float
 ) {
     private val _indicatorOffset = Animatable(0f)
     private val mutatorMutex = MutatorMutex()
-    var refreshTriggerDistance: Float = 0f
+    var refreshTrigger: Float by mutableStateOf(refreshTrigger)
         internal set
 
     /**
@@ -83,7 +87,7 @@ class SwipeRefreshState(
         headerState = if (isRefreshing) {
             RefreshHeaderState.Refreshing
         } else if (isSwipeInProgress) {
-            if (indicatorOffset > refreshTriggerDistance) {
+            if (indicatorOffset > refreshTrigger) {
                 RefreshHeaderState.ReleaseToRefresh
             } else {
                 RefreshHeaderState.PullDownToRefresh

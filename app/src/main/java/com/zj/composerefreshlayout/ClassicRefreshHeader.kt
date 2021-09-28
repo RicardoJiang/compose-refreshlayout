@@ -39,7 +39,7 @@ fun ClassicRefreshHeader(state: SwipeRefreshState) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(80.dp), contentAlignment = Alignment.Center
+            .height(60.dp), contentAlignment = Alignment.Center
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             if (state.headerState == RefreshHeaderState.Refreshing) {

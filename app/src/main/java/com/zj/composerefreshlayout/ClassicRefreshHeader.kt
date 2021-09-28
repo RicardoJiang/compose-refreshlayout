@@ -17,19 +17,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import com.zj.composerefreshlayout.header.ArrowDrawable
+import com.zj.composerefreshlayout.header.ProgressDrawable
 
 @Composable
 fun ClassicRefreshHeader(state: SwipeRefreshState) {
     val text = when (state.headerState) {
-        RefreshHeaderState.PullDownToRefresh -> {
-            "下拉刷新"
-        }
-        RefreshHeaderState.Refreshing -> {
-            "正在刷新..."
-        }
-        else -> {
-            "释放刷新"
-        }
+        RefreshHeaderState.PullDownToRefresh -> "下拉刷新"
+        RefreshHeaderState.Refreshing -> "正在刷新..."
+        else -> "释放刷新"
     }
     val angle = remember {
         Animatable(0f)
@@ -47,13 +42,24 @@ fun ClassicRefreshHeader(state: SwipeRefreshState) {
             .height(80.dp), contentAlignment = Alignment.Center
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Image(
-                painter = rememberDrawablePainter(drawable = ArrowDrawable()),
-                contentDescription = "",
-                modifier = Modifier
-                    .size(20.dp)
-                    .rotate(angle.value)
-            )
+            if (state.headerState == RefreshHeaderState.Refreshing) {
+                Image(
+                    painter = rememberDrawablePainter(drawable = ProgressDrawable().apply {
+                        setColor(0xff666666.toInt())
+                    }),
+                    contentDescription = "",
+                    modifier = Modifier
+                        .size(20.dp)
+                )
+            } else {
+                Image(
+                    painter = rememberDrawablePainter(drawable = ArrowDrawable()),
+                    contentDescription = "",
+                    modifier = Modifier
+                        .size(20.dp)
+                        .rotate(angle.value)
+                )
+            }
             Text(
                 text = text,
                 color = Color.Black,

@@ -68,7 +68,8 @@ fun SwipeRefresh(
     onRefresh: () -> Unit,
     modifier: Modifier = Modifier,
     swipeEnabled: Boolean = true,
-    refreshTriggerRate: Float = 1f, //刷新生效高度与refreshHeader的比例
+    refreshTriggerRate: Float = 1f, //刷新生效高度与refreshHeader高度的比例
+    maxDragRate: Float = 2.5f, //最大刷新距离与refreshHeader高度的比例
     indicator: @Composable (state: SwipeRefreshState) -> Unit = {
         ClassicRefreshHeader(it)
     },
@@ -80,7 +81,8 @@ fun SwipeRefresh(
         mutableStateOf(0)
     }
     val refreshTrigger = indicatorHeight * refreshTriggerRate
-    val state = rememberSwipeRefreshState(isRefreshing, refreshTrigger)
+    val maxDrag = indicatorHeight * maxDragRate
+    val state = rememberSwipeRefreshState(isRefreshing, refreshTrigger, maxDrag)
     LaunchedEffect(state.isSwipeInProgress, state.isRefreshing) {
         // If there's no swipe currently in progress, animate to the correct resting position
         if (!state.isSwipeInProgress) {

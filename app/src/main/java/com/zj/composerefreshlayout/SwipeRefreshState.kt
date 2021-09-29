@@ -15,16 +15,19 @@ import androidx.compose.runtime.*
 @Composable
 fun rememberSwipeRefreshState(
     isRefreshing: Boolean,
-    refreshTrigger: Float
+    refreshTrigger: Float,
+    maxDrag: Float
 ): SwipeRefreshState {
     return remember {
         SwipeRefreshState(
             isRefreshing = isRefreshing,
-            refreshTrigger = refreshTrigger
+            refreshTrigger = refreshTrigger,
+            maxDrag = maxDrag
         )
     }.apply {
         this.isRefreshing = isRefreshing
         this.refreshTrigger = refreshTrigger
+        this.maxDrag = maxDrag
     }
 }
 
@@ -39,10 +42,21 @@ fun rememberSwipeRefreshState(
 @Stable
 class SwipeRefreshState(
     isRefreshing: Boolean,
-    refreshTrigger: Float
+    refreshTrigger: Float,
+    maxDrag: Float
 ) {
     private val _indicatorOffset = Animatable(0f)
     private val mutatorMutex = MutatorMutex()
+
+    /**
+     * 最大下拉距离
+     */
+    var maxDrag: Float by mutableStateOf(maxDrag)
+        internal set
+
+    /**
+     * 刷新生效距离
+     */
     var refreshTrigger: Float by mutableStateOf(refreshTrigger)
         internal set
 
@@ -78,8 +92,10 @@ class SwipeRefreshState(
      */
     internal suspend fun dispatchScrollDelta(delta: Float) {
         mutatorMutex.mutate(MutatePriority.UserInput) {
-            _indicatorOffset.snapTo(_indicatorOffset.value + delta)
-            updateHeaderState()
+            if (_indicatorOffset.value + delta < maxDrag) {
+                _indicatorOffset.snapTo(_indicatorOffset.value + delta)
+                updateHeaderState()
+            }
         }
     }
 

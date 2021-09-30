@@ -4,6 +4,8 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.MutatePriority
 import androidx.compose.foundation.MutatorMutex
 import androidx.compose.runtime.*
+import java.lang.Math.*
+import kotlin.math.pow
 
 /**
  * Creates a [SwipeRefreshState] that is remembered across compositions.
@@ -92,10 +94,9 @@ class SwipeRefreshState(
      */
     internal suspend fun dispatchScrollDelta(delta: Float) {
         mutatorMutex.mutate(MutatePriority.UserInput) {
-            if (_indicatorOffset.value + delta < maxDrag) {
-                _indicatorOffset.snapTo(_indicatorOffset.value + delta)
-                updateHeaderState()
-            }
+            val slingShotOffset = getSlingShotOffset(_indicatorOffset.value + delta, maxDrag)
+            _indicatorOffset.snapTo(slingShotOffset)
+            updateHeaderState()
         }
     }
 
@@ -111,6 +112,23 @@ class SwipeRefreshState(
         } else {
             RefreshHeaderState.PullDownToRefresh
         }
+    }
+
+    private fun getSlingShotOffset(offsetY: Float, maxOffsetY: Float): Float {
+        val offsetPercent = min(1f, offsetY / maxOffsetY)
+        val extraOffset = abs(offsetY) - maxOffsetY
+
+        // Can accommodate custom start and slingshot distance here
+        val slingshotDistance = maxOffsetY
+        val tensionSlingshotPercent = max(
+            0f, min(extraOffset, slingshotDistance * 2) / slingshotDistance
+        )
+        val tensionPercent = (
+                (tensionSlingshotPercent / 4) -
+                        (tensionSlingshotPercent / 4).pow(2)
+                ) * 2
+        val extraMove = slingshotDistance * tensionPercent * 2
+        return ((slingshotDistance * offsetPercent) + extraMove)
     }
 }
 

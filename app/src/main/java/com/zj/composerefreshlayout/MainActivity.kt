@@ -45,6 +45,9 @@ fun RefreshLayoutDemo() {
     SwipeRefresh(
         isRefreshing = refreshing,
         onRefresh = { refreshing = true },
+        indicator = {
+            BallRefreshHeader(it)
+        }
     ) {
         LazyColumn() {
             items(list) {

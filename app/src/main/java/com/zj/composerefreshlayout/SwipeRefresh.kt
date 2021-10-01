@@ -116,7 +116,7 @@ fun SwipeRefresh(
             .offset {
                 IntOffset(0, state.indicatorOffset.toInt() - indicatorHeight)
             }) {
-            ClassicRefreshHeader(state)
+            indicator(state)
         }
         Box(modifier = Modifier.offset {
             IntOffset(0, state.indicatorOffset.toInt())

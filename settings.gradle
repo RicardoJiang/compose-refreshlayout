@@ -8,3 +8,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "ComposeRefreshLayout"
 include ':app'
+include ':refreshlayout'

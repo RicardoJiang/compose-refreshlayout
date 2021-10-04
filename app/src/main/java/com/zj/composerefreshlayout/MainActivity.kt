@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.zj.composerefreshlayout.customheader.LottieHeaderTwo
 import com.zj.composerefreshlayout.customheader.official.OfficialRefreshHeader
 import com.zj.composerefreshlayout.ui.theme.ComposeRefreshLayoutTheme
+import com.zj.refreshlayout.GlowIndicator
 import com.zj.refreshlayout.SwipeRefreshLayout
 import com.zj.refreshlayout.SwipeRefreshStyle
 import kotlinx.coroutines.delay
@@ -49,9 +50,9 @@ fun RefreshLayoutDemo() {
     SwipeRefreshLayout(
         isRefreshing = refreshing,
         onRefresh = { refreshing = true },
-        swipeStyle = SwipeRefreshStyle.FixedContent,
+        swipeStyle = SwipeRefreshStyle.FixedFront,
         indicator = {
-            OfficialRefreshHeader(it)
+            GlowIndicator(it)
         }
     ) {
         LazyColumn() {

@@ -65,7 +65,7 @@ fun SwipeRefreshLayout(
             .offset {
                 getHeaderOffset(swipeStyle, state, indicatorHeight)
             }
-            .zIndex(if (swipeStyle == SwipeRefreshStyle.FixedContent) 1f else 0f)
+            .zIndex(getHeaderZIndex(swipeStyle))
         ) {
             indicator(state)
         }
@@ -74,6 +74,14 @@ fun SwipeRefreshLayout(
         }) {
             content()
         }
+    }
+}
+
+private fun getHeaderZIndex(style: SwipeRefreshStyle): Float {
+    return if (style == SwipeRefreshStyle.FixedFront || style == SwipeRefreshStyle.FixedContent) {
+        1f
+    } else {
+        0f
     }
 }
 
@@ -86,7 +94,7 @@ private fun getHeaderOffset(
         SwipeRefreshStyle.Translate -> {
             IntOffset(0, state.indicatorOffset.toInt() - indicatorHeight)
         }
-        SwipeRefreshStyle.FixedBehind -> {
+        SwipeRefreshStyle.FixedBehind, SwipeRefreshStyle.FixedFront -> {
             IntOffset(0, 0)
         }
         else -> {

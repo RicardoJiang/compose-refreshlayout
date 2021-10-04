@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.zj.composerefreshlayout.customheader.LottieHeaderTwo
+import com.zj.composerefreshlayout.customheader.official.OfficialRefreshHeader
 import com.zj.composerefreshlayout.ui.theme.ComposeRefreshLayoutTheme
 import com.zj.refreshlayout.SwipeRefreshLayout
 import com.zj.refreshlayout.SwipeRefreshStyle
@@ -50,7 +51,7 @@ fun RefreshLayoutDemo() {
         onRefresh = { refreshing = true },
         swipeStyle = SwipeRefreshStyle.FixedContent,
         indicator = {
-            LottieHeaderTwo(it)
+            OfficialRefreshHeader(it)
         }
     ) {
         LazyColumn() {

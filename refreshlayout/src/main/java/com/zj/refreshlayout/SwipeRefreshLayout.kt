@@ -27,7 +27,7 @@ fun SwipeRefreshLayout(
     val coroutineScope = rememberCoroutineScope()
     val updatedOnRefresh = rememberUpdatedState(onRefresh)
     var indicatorHeight by remember {
-        mutableStateOf(0)
+        mutableStateOf(1)
     }
     val refreshTrigger = indicatorHeight * refreshTriggerRate
     val maxDrag = indicatorHeight * maxDragRate

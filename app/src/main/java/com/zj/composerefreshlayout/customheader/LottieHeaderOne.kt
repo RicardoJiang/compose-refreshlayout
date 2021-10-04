@@ -1,4 +1,4 @@
-package com.zj.composerefreshlayout
+package com.zj.composerefreshlayout.customheader
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
@@ -6,9 +6,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.airbnb.lottie.compose.*
+import com.zj.composerefreshlayout.R
+import com.zj.refreshlayout.SwipeRefreshState
 
 @Composable
-fun LottieHeaderTwo(state: SwipeRefreshState) {
+fun LottieHeaderOne(state: SwipeRefreshState) {
     var isPlaying by remember {
         mutableStateOf(false)
     }
@@ -17,7 +19,7 @@ fun LottieHeaderTwo(state: SwipeRefreshState) {
     }
     isPlaying = state.isRefreshing
     val lottieComposition by rememberLottieComposition(
-        spec = LottieCompositionSpec.RawRes(R.raw.refresh_two),
+        spec = LottieCompositionSpec.RawRes(R.raw.refresh_one),
     )
     val lottieAnimationState by animateLottieCompositionAsState(
         composition = lottieComposition, // 动画资源句柄
@@ -34,9 +36,7 @@ fun LottieHeaderTwo(state: SwipeRefreshState) {
         LottieAnimation(
             lottieComposition,
             lottieAnimationState,
-            modifier = Modifier
-                .padding(0.dp, 5.dp)
-                .size(150.dp)
+            modifier = Modifier.size(150.dp)
         )
 
     }

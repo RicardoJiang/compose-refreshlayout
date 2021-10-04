@@ -1,4 +1,4 @@
-package com.zj.composerefreshlayout
+package com.zj.refreshlayout
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.MutatePriority
@@ -7,15 +7,8 @@ import androidx.compose.runtime.*
 import java.lang.Math.*
 import kotlin.math.pow
 
-/**
- * Creates a [SwipeRefreshState] that is remembered across compositions.
- *
- * Changes to [isRefreshing] will result in the [SwipeRefreshState] being updated.
- *
- * @param isRefreshing the value for [SwipeRefreshState.isRefreshing]
- */
 @Composable
-fun rememberSwipeRefreshState(
+internal fun rememberSwipeRefreshState(
     isRefreshing: Boolean,
     refreshTrigger: Float,
     maxDrag: Float
@@ -34,13 +27,6 @@ fun rememberSwipeRefreshState(
 }
 
 
-/**
- * A state object that can be hoisted to control and observe changes for [SwipeRefresh].
- *
- * In most cases, this will be created via [rememberSwipeRefreshState].
- *
- * @param isRefreshing the initial value for [SwipeRefreshState.isRefreshing]
- */
 @Stable
 class SwipeRefreshState(
     isRefreshing: Boolean,

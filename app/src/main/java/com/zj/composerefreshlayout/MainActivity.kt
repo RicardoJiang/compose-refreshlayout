@@ -14,6 +14,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.zj.composerefreshlayout.customheader.LottieHeaderTwo
 import com.zj.composerefreshlayout.ui.theme.ComposeRefreshLayoutTheme
 import kotlinx.coroutines.delay
 
@@ -42,7 +43,7 @@ fun RefreshLayoutDemo() {
             refreshing = false
         }
     }
-    SwipeRefresh(
+    com.zj.refreshlayout.SwipeRefreshLayout(
         isRefreshing = refreshing,
         onRefresh = { refreshing = true },
         indicator = {

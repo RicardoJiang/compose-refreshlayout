@@ -1,4 +1,4 @@
-package com.zj.composerefreshlayout
+package com.zj.refreshlayout
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection

@@ -1,4 +1,4 @@
-package com.zj.composerefreshlayout.header;
+package com.zj.refreshlayout.header;
 
 import android.graphics.ColorFilter;
 import android.graphics.Paint;

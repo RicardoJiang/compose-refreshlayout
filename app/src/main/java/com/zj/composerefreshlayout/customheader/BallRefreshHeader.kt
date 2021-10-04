@@ -1,4 +1,4 @@
-package com.zj.composerefreshlayout
+package com.zj.composerefreshlayout.customheader
 
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.compose.foundation.Canvas
@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
+import com.zj.refreshlayout.SwipeRefreshState
 import kotlinx.coroutines.delay
 
 @Composable

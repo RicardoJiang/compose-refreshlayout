@@ -1,4 +1,4 @@
-package com.zj.composerefreshlayout
+package com.zj.refreshlayout.header
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.Image
@@ -16,8 +16,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
-import com.zj.composerefreshlayout.header.ArrowDrawable
-import com.zj.composerefreshlayout.header.ProgressDrawable
+import com.zj.refreshlayout.RefreshHeaderState
+import com.zj.refreshlayout.SwipeRefreshState
 
 @Composable
 fun ClassicRefreshHeader(state: SwipeRefreshState) {

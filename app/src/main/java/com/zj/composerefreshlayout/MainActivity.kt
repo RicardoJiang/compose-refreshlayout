@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.zj.composerefreshlayout.sample.BasicUsageActivity
+import com.zj.composerefreshlayout.sample.*
 import com.zj.composerefreshlayout.ui.theme.ComposeRefreshLayoutTheme
 import com.zj.composerefreshlayout.ui.widget.HeaderTitle
 import com.zj.composerefreshlayout.ui.widget.RefreshColumnItem
@@ -62,27 +62,27 @@ fun HomeScreen() {
         }
         item {
             RefreshColumnItem("Custom", "自定义Header") {
-
+                CustomHeaderActivity.navigate(context)
             }
         }
         item {
             RefreshColumnItem("Custom", "自定义Header使用Lottie") {
-
+                CustomLottieHeaderActivity.navigate(context)
             }
         }
         item {
             RefreshColumnItem("FixedBehind", "下拉的时候Header固定在背后") {
-
+                FixedBehindHeaderActivity.navigate(context)
             }
         }
         item {
             RefreshColumnItem("FixedFront", "下拉的时候Header固定在前面") {
-
+                FixedFrontHeaderActivity.navigate(context)
             }
         }
         item {
             RefreshColumnItem("FixedContent", "下拉的时候内容不动,Header向下滑动") {
-
+                FixedContentHeaderActivity.navigate(context)
             }
         }
     }

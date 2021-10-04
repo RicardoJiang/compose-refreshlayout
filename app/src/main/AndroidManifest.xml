@@ -23,6 +23,21 @@
         <activity
             android:name=".sample.BasicUsageActivity"
             android:theme="@style/Theme.ComposeRefreshLayout.NoActionBar" />
+        <activity
+            android:name=".sample.CustomHeaderActivity"
+            android:theme="@style/Theme.ComposeRefreshLayout.NoActionBar" />
+        <activity
+            android:name=".sample.CustomLottieHeaderActivity"
+            android:theme="@style/Theme.ComposeRefreshLayout.NoActionBar" />
+        <activity
+            android:name=".sample.FixedBehindHeaderActivity"
+            android:theme="@style/Theme.ComposeRefreshLayout.NoActionBar" />
+        <activity
+            android:name=".sample.FixedFrontHeaderActivity"
+            android:theme="@style/Theme.ComposeRefreshLayout.NoActionBar" />
+        <activity
+            android:name=".sample.FixedContentHeaderActivity"
+            android:theme="@style/Theme.ComposeRefreshLayout.NoActionBar" />
     </application>
 
 </manifest>

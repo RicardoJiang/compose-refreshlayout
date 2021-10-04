@@ -16,6 +16,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.core.view.WindowCompat
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.zj.composerefreshlayout.customheader.BallRefreshHeader
 import com.zj.composerefreshlayout.ui.theme.ComposeRefreshLayoutTheme
 import com.zj.composerefreshlayout.ui.widget.HeaderTitle
 import com.zj.composerefreshlayout.ui.widget.RefreshColumnItem
@@ -23,10 +24,10 @@ import com.zj.composerefreshlayout.utils.getActivity
 import com.zj.refreshlayout.SwipeRefreshLayout
 import kotlinx.coroutines.delay
 
-class BasicUsageActivity : ComponentActivity() {
+class CustomHeaderActivity : ComponentActivity() {
     companion object {
         fun navigate(context: Context) {
-            context.startActivity(Intent(context, BasicUsageActivity::class.java))
+            context.startActivity(Intent(context, CustomHeaderActivity::class.java))
         }
     }
 
@@ -41,7 +42,7 @@ class BasicUsageActivity : ComponentActivity() {
                         darkIcons = true
                     )
                     Surface(color = MaterialTheme.colors.background) {
-                        BasicSample()
+                        CustomHeaderSample()
                     }
                 }
             }
@@ -50,7 +51,7 @@ class BasicUsageActivity : ComponentActivity() {
 }
 
 @Composable
-fun BasicSample() {
+fun CustomHeaderSample() {
     val activity = LocalContext.current.getActivity()
     var refreshing by remember { mutableStateOf(false) }
     val list = (1..20).toList()
@@ -61,10 +62,15 @@ fun BasicSample() {
         }
     }
     Column() {
-        HeaderTitle(title = "基本使用", true) {
+        HeaderTitle(title = "自定义Header", true) {
             activity?.finish()
         }
-        SwipeRefreshLayout(isRefreshing = refreshing, onRefresh = { refreshing = true }) {
+        SwipeRefreshLayout(
+            isRefreshing = refreshing,
+            onRefresh = { refreshing = true },
+            indicator = {
+                BallRefreshHeader(state = it)
+            }) {
             LazyColumn {
                 items(list) {
                     val title = "第${it}条数据"

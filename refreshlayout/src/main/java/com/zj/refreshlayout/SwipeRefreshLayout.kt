@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.offset
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.IntOffset
@@ -62,6 +63,7 @@ fun SwipeRefreshLayout(
             .onGloballyPositioned {
                 indicatorHeight = it.size.height
             }
+            .let { if (isHeaderNeedClip(state, indicatorHeight)) it.clipToBounds() else it }
             .offset {
                 getHeaderOffset(swipeStyle, state, indicatorHeight)
             }
@@ -75,6 +77,10 @@ fun SwipeRefreshLayout(
             content()
         }
     }
+}
+
+private fun isHeaderNeedClip(state: SwipeRefreshState, indicatorHeight: Int): Boolean {
+    return state.indicatorOffset < indicatorHeight
 }
 
 private fun getHeaderZIndex(style: SwipeRefreshStyle): Float {

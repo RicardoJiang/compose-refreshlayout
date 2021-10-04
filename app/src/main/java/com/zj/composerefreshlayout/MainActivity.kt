@@ -13,10 +13,15 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.zj.composerefreshlayout.customheader.LottieHeaderTwo
-import com.zj.composerefreshlayout.customheader.official.OfficialRefreshHeader
+import androidx.core.view.WindowCompat
+import com.google.accompanist.insets.ProvideWindowInsets
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.zj.composerefreshlayout.sample.BasicUsageActivity
 import com.zj.composerefreshlayout.ui.theme.ComposeRefreshLayoutTheme
+import com.zj.composerefreshlayout.ui.widget.HeaderTitle
+import com.zj.composerefreshlayout.ui.widget.RefreshColumnItem
 import com.zj.refreshlayout.GlowIndicator
 import com.zj.refreshlayout.SwipeRefreshLayout
 import com.zj.refreshlayout.SwipeRefreshStyle
@@ -26,16 +31,63 @@ class MainActivity : ComponentActivity() {
     @ExperimentalMaterialApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
             ComposeRefreshLayoutTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(color = MaterialTheme.colors.background) {
-                    RefreshLayoutDemo()
+                ProvideWindowInsets {
+                    rememberSystemUiController().setStatusBarColor(
+                        Color.Transparent,
+                        darkIcons = true
+                    )
+                    Surface(color = MaterialTheme.colors.background) {
+                        HomeScreen()
+                    }
                 }
             }
         }
     }
 }
+
+@Composable
+fun HomeScreen() {
+    val context = LocalContext.current
+    LazyColumn {
+        item {
+            HeaderTitle(title = "使用示例", false)
+        }
+        item {
+            RefreshColumnItem("Basic", "基本使用") {
+                BasicUsageActivity.navigate(context)
+            }
+        }
+        item {
+            RefreshColumnItem("Custom", "自定义Header") {
+
+            }
+        }
+        item {
+            RefreshColumnItem("Custom", "自定义Header使用Lottie") {
+
+            }
+        }
+        item {
+            RefreshColumnItem("FixedBehind", "下拉的时候Header固定在背后") {
+
+            }
+        }
+        item {
+            RefreshColumnItem("FixedFront", "下拉的时候Header固定在前面") {
+
+            }
+        }
+        item {
+            RefreshColumnItem("FixedContent", "下拉的时候内容不动,Header向下滑动") {
+
+            }
+        }
+    }
+}
+
 
 @Composable
 fun RefreshLayoutDemo() {
@@ -57,7 +109,7 @@ fun RefreshLayoutDemo() {
     ) {
         LazyColumn() {
             items(list) {
-                ColumnItem()
+                RefreshColumnItem("Basic", "基本使用")
             }
         }
     }

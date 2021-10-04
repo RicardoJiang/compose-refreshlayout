@@ -20,6 +20,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".sample.BasicUsageActivity"
+            android:theme="@style/Theme.ComposeRefreshLayout.NoActionBar" />
     </application>
 
 </manifest>

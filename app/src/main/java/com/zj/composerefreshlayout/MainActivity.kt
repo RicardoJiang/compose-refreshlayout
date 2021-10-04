@@ -46,7 +46,7 @@ fun RefreshLayoutDemo() {
         isRefreshing = refreshing,
         onRefresh = { refreshing = true },
         indicator = {
-            BallRefreshHeader(it)
+            LottieHeaderTwo(it)
         }
     ) {
         LazyColumn() {

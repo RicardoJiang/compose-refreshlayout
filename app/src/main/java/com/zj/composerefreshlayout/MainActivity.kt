@@ -16,6 +16,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.zj.composerefreshlayout.customheader.LottieHeaderTwo
 import com.zj.composerefreshlayout.ui.theme.ComposeRefreshLayoutTheme
+import com.zj.refreshlayout.SwipeRefreshLayout
+import com.zj.refreshlayout.SwipeRefreshStyle
 import kotlinx.coroutines.delay
 
 class MainActivity : ComponentActivity() {
@@ -43,9 +45,10 @@ fun RefreshLayoutDemo() {
             refreshing = false
         }
     }
-    com.zj.refreshlayout.SwipeRefreshLayout(
+    SwipeRefreshLayout(
         isRefreshing = refreshing,
         onRefresh = { refreshing = true },
+        swipeStyle = SwipeRefreshStyle.FixedContent,
         indicator = {
             LottieHeaderTwo(it)
         }

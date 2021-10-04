@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.zIndex
 import com.zj.refreshlayout.header.ClassicRefreshHeader
 
 @Composable
@@ -14,6 +15,7 @@ fun SwipeRefreshLayout(
     isRefreshing: Boolean,
     onRefresh: () -> Unit,
     modifier: Modifier = Modifier,
+    swipeStyle: SwipeRefreshStyle = SwipeRefreshStyle.Translate,
     swipeEnabled: Boolean = true,
     refreshTriggerRate: Float = 1f, //刷新生效高度与refreshHeader高度的比例
     maxDragRate: Float = 2.5f, //最大刷新距离与refreshHeader高度的比例
@@ -61,14 +63,51 @@ fun SwipeRefreshLayout(
                 indicatorHeight = it.size.height
             }
             .offset {
-                IntOffset(0, state.indicatorOffset.toInt() - indicatorHeight)
-            }) {
+                getHeaderOffset(swipeStyle, state, indicatorHeight)
+            }
+            .zIndex(if (swipeStyle == SwipeRefreshStyle.FixedContent) 1f else 0f)
+        ) {
             indicator(state)
         }
         Box(modifier = Modifier.offset {
-            IntOffset(0, state.indicatorOffset.toInt())
+            getContentOffset(swipeStyle, state)
         }) {
             content()
+        }
+    }
+}
+
+private fun getHeaderOffset(
+    style: SwipeRefreshStyle,
+    state: SwipeRefreshState,
+    indicatorHeight: Int
+): IntOffset {
+    return when (style) {
+        SwipeRefreshStyle.Translate -> {
+            IntOffset(0, state.indicatorOffset.toInt() - indicatorHeight)
+        }
+        SwipeRefreshStyle.FixedBehind -> {
+            IntOffset(0, 0)
+        }
+        else -> {
+            IntOffset(0, state.indicatorOffset.toInt() - indicatorHeight)
+        }
+    }
+}
+
+private fun getContentOffset(
+    style: SwipeRefreshStyle,
+    state: SwipeRefreshState
+): IntOffset {
+    return when (style) {
+        SwipeRefreshStyle.Translate -> {
+            IntOffset(0, state.indicatorOffset.toInt())
+        }
+        SwipeRefreshStyle.FixedBehind -> {
+            IntOffset(0, state.indicatorOffset.toInt())
+        }
+        else -> {
+            IntOffset(0, 0)
         }
     }
 }

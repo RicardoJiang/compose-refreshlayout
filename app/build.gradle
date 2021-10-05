@@ -61,5 +61,9 @@ dependencies {
     implementation "com.airbnb.android:lottie-compose:4.0.0"
     implementation "com.google.accompanist:accompanist-insets:0.18.0"
     implementation "com.google.accompanist:accompanist-systemuicontroller:0.18.0"
-    implementation project(path: ':refreshlayout')
+    if (useLocal == "true") {
+        implementation project(path: ':refreshlayout')
+    } else {
+        implementation 'io.github.shenzhen2017:compose-refreshlayout:1.0.0'
+    }
 }

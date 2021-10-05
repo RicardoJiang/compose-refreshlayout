@@ -11,6 +11,16 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.zIndex
 import com.zj.refreshlayout.header.ClassicRefreshHeader
 
+/**
+ * @param isRefreshing 是否正在刷新
+ * @param onRefresh 触发刷新回调
+ * @param modifier 样式修饰符
+ * @param swipeStyle 下拉刷新方式
+ * @param swipeEnabled 是否允许下拉刷新
+ * @param refreshTriggerRate 刷新生效高度与indicator高度的比例
+ * @param maxDragRate 最大刷新距离与indicator高度的比例
+ * @param indicator 自定义的indicator,有默认值
+ */
 @Composable
 fun SwipeRefreshLayout(
     isRefreshing: Boolean,
@@ -18,8 +28,8 @@ fun SwipeRefreshLayout(
     modifier: Modifier = Modifier,
     swipeStyle: SwipeRefreshStyle = SwipeRefreshStyle.Translate,
     swipeEnabled: Boolean = true,
-    refreshTriggerRate: Float = 1f, //刷新生效高度与refreshHeader高度的比例
-    maxDragRate: Float = 2.5f, //最大刷新距离与refreshHeader高度的比例
+    refreshTriggerRate: Float = 1f, //刷新生效高度与indicator高度的比例
+    maxDragRate: Float = 2.5f, //最大刷新距离与indicator高度的比例
     indicator: @Composable (state: SwipeRefreshState) -> Unit = {
         ClassicRefreshHeader(it)
     },

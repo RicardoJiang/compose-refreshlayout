@@ -56,7 +56,7 @@ fun BasicSample() {
     val list = (1..20).toList()
     LaunchedEffect(refreshing) {
         if (refreshing) {
-            delay(3000)
+            delay(2000)
             refreshing = false
         }
     }

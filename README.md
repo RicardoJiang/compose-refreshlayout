@@ -8,16 +8,15 @@
 
 |基本使用|自定义Header|
 |:---:|:---:|
-|![](https://raw.githubusercontents.com/shenzhen2017/resource/main/2021/october/p1.gif)|![](https://raw.githubusercontents.com/shenzhen2017/resource/main/2021/october/p2.gif)|
+|![](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/4d547d5a52694601869257105fed472b~tplv-k3u1fbpfcp-zoom-1.image)|![](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/c4640c27e83847b0bb285ef5e69f4766~tplv-k3u1fbpfcp-zoom-1.image)|
 
 |Lottie Header|FixedBehind(固定在背后)|
 |:---:|:---:|
-|![](https://raw.githubusercontents.com/shenzhen2017/resource/main/2021/october/p3.gif)|![](https://raw.githubusercontents.com/shenzhen2017/resource/main/2021/october/p4.gif)|
+|![](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/24ca1069114f45afb0670cf304ca9b3a~tplv-k3u1fbpfcp-zoom-1.image)|![](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a4033d5cd9fc46aebbb3478989fdff8a~tplv-k3u1fbpfcp-zoom-1.image)|
 
 |FixedFront(固定在前面)|FixedContent(内容固定)|
 |:---:|:---:|
-|![](https://raw.githubusercontents.com/shenzhen2017/resource/main/2021/october/p5.gif)|![](https://raw.githubusercontents.com/shenzhen2017/resource/main/2021/october/p6.gif)|
-
+|![](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/583ccb93808e40cd9429e8c1779986f6~tplv-k3u1fbpfcp-zoom-1.image)|![](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/2f5f35c38ca844538756fb20f0371d50~tplv-k3u1fbpfcp-zoom-1.image)|
 ## 特性
 1. 接入方便，使用简单，快速实现下拉刷新功能
 2. 支持自定义`Header`,`Header`可观察下拉状态并更新`UI`

@@ -189,7 +189,7 @@ interface NestedScrollConnection {
 
 ### 具体实现
 上面我们已经介绍了总体思路与`NestedScrollConnection API`，然后我们应该需要重写以下方法
-1. `onPostScroll`: 当`Content`滑动到顶部时，如果继续往上滑，我们就应该增加父布局的`offset`,因此在`onPostScroll`中判断`available.y > 0`，然后进行相应的偏移,对我们来说是个合适的时机
+1. `onPostScroll`: 当`Content`滑动到顶部时，如果继续往下滑，我们就应该增加父布局的`offset`,因此在`onPostScroll`中判断`available.y > 0`，然后进行相应的偏移,对我们来说是个合适的时机
 2. `onPreScroll`: 当我们上滑时，如果`offset>0`,则说明父布局有偏移，因此我们应先减小父布局的`offset`直到0,然后将剩余的偏移量传递给`Content`，因此下滑时应该使用`onPreScroll`拦截判断
 3. `onPreFling`: 当我们松开手时，应判断当前的偏移量是否大于刷新触发距离，如果大于则触发刷新，否则父布局的`offset`置为0,这个判断在`onPreFling`时做比较合适
 

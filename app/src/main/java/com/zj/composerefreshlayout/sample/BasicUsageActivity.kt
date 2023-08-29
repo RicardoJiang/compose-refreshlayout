@@ -10,7 +10,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.view.WindowCompat
@@ -53,6 +58,7 @@ class BasicUsageActivity : ComponentActivity() {
 fun BasicSample() {
     val activity = LocalContext.current.getActivity()
     var refreshing by remember { mutableStateOf(false) }
+    var isLoadingMore by remember { mutableStateOf(false) }
     val list = (1..20).toList()
     LaunchedEffect(refreshing) {
         if (refreshing) {
@@ -64,7 +70,13 @@ fun BasicSample() {
         HeaderTitle(title = "基本使用", true) {
             activity?.finish()
         }
-        SwipeRefreshLayout(isRefreshing = refreshing, onRefresh = { refreshing = true }) {
+        SwipeRefreshLayout(
+            isRefreshing = refreshing,
+            isLoadingMore = isLoadingMore,
+            loadMoreEnabled = true,
+            onRefresh = { refreshing = true },
+            onLoadMore = {},
+        ) {
             LazyColumn {
                 items(list) {
                     val title = "第${it}条数据"

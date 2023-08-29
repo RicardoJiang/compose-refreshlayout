@@ -10,17 +10,20 @@ import kotlin.math.pow
 @Composable
 internal fun rememberSwipeRefreshState(
     isRefreshing: Boolean,
+    isLoadingMore: Boolean,
     refreshTrigger: Float,
     maxDrag: Float
 ): SwipeRefreshState {
     return remember {
         SwipeRefreshState(
             isRefreshing = isRefreshing,
+            isLoadingMore = isLoadingMore,
             refreshTrigger = refreshTrigger,
             maxDrag = maxDrag
         )
     }.apply {
         this.isRefreshing = isRefreshing
+        this.isLoadingMore = isLoadingMore
         this.refreshTrigger = refreshTrigger
         this.maxDrag = maxDrag
     }
@@ -30,6 +33,7 @@ internal fun rememberSwipeRefreshState(
 @Stable
 class SwipeRefreshState(
     isRefreshing: Boolean,
+    isLoadingMore: Boolean,
     refreshTrigger: Float,
     maxDrag: Float
 ) {
@@ -52,6 +56,12 @@ class SwipeRefreshState(
      * Whether this [SwipeRefreshState] is currently refreshing or not.
      */
     var isRefreshing: Boolean by mutableStateOf(isRefreshing)
+        internal set
+
+    /**
+     * Whether this [SwipeRefreshState] is currently loading more or not.
+     */
+    var isLoadingMore: Boolean by mutableStateOf(isLoadingMore)
         internal set
 
     /**

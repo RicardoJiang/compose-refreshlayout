@@ -12,10 +12,12 @@ internal class SwipeRefreshNestedScrollConnection(
     private val state: SwipeRefreshState,
     private val coroutineScope: CoroutineScope,
     private val onRefresh: () -> Unit,
+    private val onLoadMore: () -> Unit,
 ) : NestedScrollConnection {
     private val dragMultiplier = 0.5f
 
-    var enabled: Boolean = false
+    var enabledRefresh: Boolean = false
+    var enabledLoadMore: Boolean = false
     var refreshTrigger: Float = 0f
 
     override fun onPreScroll(
@@ -23,11 +25,11 @@ internal class SwipeRefreshNestedScrollConnection(
         source: NestedScrollSource
     ): Offset = when {
         // If swiping isn't enabled, return zero
-        !enabled -> Offset.Zero
+        !enabledRefresh -> Offset.Zero
         // If we're refreshing, return zero
         state.isRefreshing -> Offset.Zero
         // If the user is swiping up, handle it
-        source == NestedScrollSource.Drag && available.y < 0 -> onScroll(available)
+        source == NestedScrollSource.Drag && available.y < 0 -> onDragRefresh(available)
         else -> Offset.Zero
     }
 
@@ -37,15 +39,16 @@ internal class SwipeRefreshNestedScrollConnection(
         source: NestedScrollSource
     ): Offset = when {
         // If swiping isn't enabled, return zero
-        !enabled -> Offset.Zero
+        !enabledRefresh -> Offset.Zero
         // If we're refreshing, return zero
         state.isRefreshing -> Offset.Zero
         // If the user is swiping down and there's y remaining, handle it
-        source == NestedScrollSource.Drag && available.y > 0 -> onScroll(available)
+        source == NestedScrollSource.Drag && available.y > 0 -> onDragRefresh(available)
+        source == NestedScrollSource.Drag && available.y < 0 -> onDragLoadMore(available)
         else -> Offset.Zero
     }
 
-    private fun onScroll(available: Offset): Offset {
+    private fun onDragRefresh(available: Offset): Offset {
         state.isSwipeInProgress = true
 
         val newOffset = (available.y * dragMultiplier + state.indicatorOffset).coerceAtLeast(0f)
@@ -60,6 +63,13 @@ internal class SwipeRefreshNestedScrollConnection(
         } else {
             Offset.Zero
         }
+    }
+
+    private fun onDragLoadMore(available: Offset): Offset {
+        if (enabledLoadMore && !state.isLoadingMore) {
+            onLoadMore()
+        }
+        return Offset.Zero
     }
 
     override suspend fun onPreFling(available: Velocity): Velocity {

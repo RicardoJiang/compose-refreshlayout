@@ -24,10 +24,13 @@ import com.zj.refreshlayout.header.ClassicRefreshHeader
 @Composable
 fun SwipeRefreshLayout(
     isRefreshing: Boolean,
+    isLoadingMore: Boolean = false,
     onRefresh: () -> Unit,
+    onLoadMore: () -> Unit = {},
     modifier: Modifier = Modifier,
     swipeStyle: SwipeRefreshStyle = SwipeRefreshStyle.Translate,
     swipeEnabled: Boolean = true,
+    loadMoreEnabled: Boolean = false,
     refreshTriggerRate: Float = 1f, //刷新生效高度与indicator高度的比例
     maxDragRate: Float = 2.5f, //最大刷新距离与indicator高度的比例
     indicator: @Composable (state: SwipeRefreshState) -> Unit = {
@@ -37,12 +40,13 @@ fun SwipeRefreshLayout(
 ) {
     val coroutineScope = rememberCoroutineScope()
     val updatedOnRefresh = rememberUpdatedState(onRefresh)
+    val updatedOnLoadMore = rememberUpdatedState(onLoadMore)
     var indicatorHeight by remember {
         mutableStateOf(1)
     }
     val refreshTrigger = indicatorHeight * refreshTriggerRate
     val maxDrag = indicatorHeight * maxDragRate
-    val state = rememberSwipeRefreshState(isRefreshing, refreshTrigger, maxDrag)
+    val state = rememberSwipeRefreshState(isRefreshing, isLoadingMore, refreshTrigger, maxDrag)
     LaunchedEffect(state.isSwipeInProgress, state.isRefreshing) {
         // If there's no swipe currently in progress, animate to the correct resting position
         if (!state.isSwipeInProgress) {
@@ -56,12 +60,13 @@ fun SwipeRefreshLayout(
 
     // Our nested scroll connection, which updates our state.
     val nestedScrollConnection = remember(state, coroutineScope) {
-        SwipeRefreshNestedScrollConnection(state, coroutineScope) {
-            // On refresh, re-dispatch to the update onRefresh block
-            updatedOnRefresh.value.invoke()
-        }
+        SwipeRefreshNestedScrollConnection(state, coroutineScope,
+            onRefresh = { updatedOnRefresh.value.invoke() },
+            onLoadMore = { updatedOnLoadMore.value.invoke() }
+        )
     }.apply {
-        this.enabled = swipeEnabled
+        this.enabledRefresh = swipeEnabled
+        this.enabledLoadMore = loadMoreEnabled
         this.refreshTrigger = refreshTrigger
     }
 
@@ -110,9 +115,11 @@ private fun getHeaderOffset(
         SwipeRefreshStyle.Translate -> {
             IntOffset(0, state.indicatorOffset.toInt() - indicatorHeight)
         }
+
         SwipeRefreshStyle.FixedBehind, SwipeRefreshStyle.FixedFront -> {
             IntOffset(0, 0)
         }
+
         else -> {
             IntOffset(0, state.indicatorOffset.toInt() - indicatorHeight)
         }
@@ -127,9 +134,11 @@ private fun getContentOffset(
         SwipeRefreshStyle.Translate -> {
             IntOffset(0, state.indicatorOffset.toInt())
         }
+
         SwipeRefreshStyle.FixedBehind -> {
             IntOffset(0, state.indicatorOffset.toInt())
         }
+
         else -> {
             IntOffset(0, 0)
         }

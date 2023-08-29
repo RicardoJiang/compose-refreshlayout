@@ -46,13 +46,16 @@ dependencies {
 ### 简单使用
 `SwipeRefreshLayout`函数主要包括以下参数:
 1. `isRefreshing`: 是否正在刷新
-2. `onRefresh`: 触发刷新回调
-3. `modifier`: 样式修饰符
-4. `swipeStyle`: 下拉刷新方式
-5. `swipeEnabled`: 是否允许下拉刷新
-6. `refreshTriggerRate`: 刷新生效高度与`indicator`高度的比例
-7. `maxDragRate`: 最大刷新距离与`indicator`高度的比例
-8. `indicator`: 自定义的`indicator`,有默认值
+2. `isLoadingMore`: 是否正在加载更多
+3. `onRefresh`: 触发刷新回调
+4. `onLoadMore`: 触发加载更多回调
+5. `modifier`: 样式修饰符
+6. `swipeStyle`: 下拉刷新方式
+7. `swipeEnabled`: 是否允许下拉刷新
+8. `loadMoreEnabled`: 是否允许加载更多，默认不允许
+9. `refreshTriggerRate`: 刷新生效高度与`indicator`高度的比例
+10. `maxDragRate`: 最大刷新距离与`indicator`高度的比例
+11. `indicator`: 自定义的`indicator`,有默认值
 
 在默认情况下，我们只需要传入`isRefreshing`(是否正在刷新)与`onRefresh`触发刷新回调两个参数即可
 ```kotlin

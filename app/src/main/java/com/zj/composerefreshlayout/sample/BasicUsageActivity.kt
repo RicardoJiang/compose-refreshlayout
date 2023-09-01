@@ -58,12 +58,19 @@ class BasicUsageActivity : ComponentActivity() {
 fun BasicSample() {
     val activity = LocalContext.current.getActivity()
     var refreshing by remember { mutableStateOf(false) }
-    var isLoadingMore by remember { mutableStateOf(false) }
-    val list = (1..20).toList()
+    var loadingMore by remember { mutableStateOf(false) }
+    var list by remember { mutableStateOf((1..20).toList()) }
     LaunchedEffect(refreshing) {
         if (refreshing) {
             delay(2000)
             refreshing = false
+        }
+    }
+    LaunchedEffect(loadingMore) {
+        if (loadingMore) {
+            delay(1000)
+            list = (1..40).toList()
+            loadingMore = false
         }
     }
     Column() {
@@ -72,10 +79,12 @@ fun BasicSample() {
         }
         SwipeRefreshLayout(
             isRefreshing = refreshing,
-            isLoadingMore = isLoadingMore,
+            isLoadingMore = loadingMore,
             loadMoreEnabled = true,
             onRefresh = { refreshing = true },
-            onLoadMore = {},
+            onLoadMore = {
+                loadingMore = true
+            },
         ) {
             LazyColumn {
                 items(list) {

@@ -1,5 +1,5 @@
 ## 前言
-下拉刷新是我们开发中的常见的需求，官方提供了`SwipeRefreshLayout`来实现下拉刷新，但我们常常需要定制`Header`或者`Header`与内容一起向下滚动，因此`SwipeRefreshLayout`往往不能满足我们的需求        
+[DEPRECATED]下拉刷新是我们开发中的常见的需求，官方提供了`SwipeRefreshLayout`来实现下拉刷新，但我们常常需要定制`Header`或者`Header`与内容一起向下滚动，因此`SwipeRefreshLayout`往往不能满足我们的需求        
 在使用`XML`开发时,`Github`上有不少开源库如[SmartRefreshLayout](https://github.com/scwang90/SmartRefreshLayout)实现了下拉刷新功能，可以方便地定制化`Header`与滚动方式        
 本文主要介绍如何开发一个简单易用的`Compose`版`SmartRefreshLayout`,快速实现下拉刷新功能，如果对您有所帮助可以点个`Star`:[Compose版SmartRefreshLayout](https://github.com/shenzhen2017/compose-refreshlayout)
 
